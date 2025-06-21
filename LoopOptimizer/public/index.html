@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoopOptimizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    .card {
+      background: #f9f9f9;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    textarea, input, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    .result {
+      background: #f0f7fb;
+      border-left: 4px solid #3498db;
+      padding: 15px;
+    }
+    .error {
+      background: #fbf0f0;
+      border-left: 4px solid #db3434;
+      padding: 15px;
+    }
+    pre {
+      background: #f5f5f5;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>LoopOptimizer</h1>
+    <p>Optimize animation loops for efficiency</p>
+    
+    <div class="card">
+      <h2>Upload Animation Data</h2>
+      <div class="form-group">
+        <label for="animationFile">Animation File (JSON)</label>
+        <input type="file" id="animationFile" accept=".json">
+      </div>
+      <div class="form-group">
+        <label for="animationData">Or paste JSON data:</label>
+        <textarea id="animationData" rows="10" placeholder="Paste your animation JSON data here"></textarea>
+      </div>
+      
+      <h3>Optimization Options</h3>
+      <div class="form-group">
+        <label for="quality">Quality (1-10)</label>
+        <input type="range" id="quality" min="1" max="10" value="8">
+        <span id="qualityValue">8</span>
+      </div>
+      <div class="form-group">
+        <label for="enableCompression">
+          <input type="checkbox" id="enableCompression" checked>
+          Enable Compression
+        </label>
+      </div>
+      
+      <button id="optimizeBtn">Optimize</button>
+    </div>
+    
+    <div id="resultContainer" style="display: none;" class="card result">
+      <h2>Optimization Results</h2>
+      <div id="optimizationStats"></div>
+      <h3>Optimized Data</h3>
+      <pre id="resultData"></pre>
+      <button id="downloadBtn">Download Optimized Animation</button>
+    </div>
+    
+    <div id="errorContainer" style="display: none;" class="card error">
+      <h2>Error</h2>
+      <div id="errorMessage"></div>
+    </div>
+  </div>
+
+  <script src="loop_optimizer.js"></script>
+  <script>
+    // Initialize UI elements
+    const animationFileInput = document.getElementById('animationFile');
+    const animationDataTextarea = document.getElementById('animationData');
+    const qualitySlider = document.getElementById('quality');
+    const qualityValue = document.getElementById('qualityValue');
+    const enableCompressionCheckbox = document.getElementById('enableCompression');
+    const optimizeBtn = document.getElementById('optimizeBtn');
+    const resultContainer = document.getElementById('resultContainer');
+    const optimizationStats = document.getElementById('optimizationStats');
+    const resultData = document.getElementById('resultData');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const errorContainer = document.getElementById('errorContainer');
+    const errorMessage = document.getElementById('errorMessage');
+    
+    // Update quality value display
+    qualitySlider.addEventListener('input', () => {
+      qualityValue.textContent = qualitySlider.value;
+    });
+    
+    // Handle file input
+    animationFileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          animationDataTextarea.value = e.target.result;
+        };
+        reader.readAsText(file);
+      }
+    });
+    
+    // Handle optimize button click
+    optimizeBtn.addEventListener('click', async () => {
+      hideResults();
+      
+      try {
+        // Get animation data
+        const animationDataStr = animationDataTextarea.value.trim();
+        if (!animationDataStr) {
+          showError('Please provide animation data');
+          return;
+        }
+        
+        const animationData = JSON.parse(animationDataStr);
+        
+        // Get optimization options
+        const options = {
+          quality: parseInt(qualitySlider.value),
+          enableCompression: enableCompressionCheckbox.checked
+        };
+        
+        // Create optimizer instance
+        const optimizer = new LoopOptimizer(options);
+        
+        // Optimize the animation
+        const optimized = await optimizer.optimizeLoop(animationData, options);
+        
+        // Display results
+        showResults(optimized);
+      } catch (error) {
+        showError(error.message || 'An error occurred during optimization');
+      }
+    });
+    
+    // Handle download button click
+    downloadBtn.addEventListener('click', () => {
+      const resultText = resultData.textContent;
+      if (!resultText) return;
+      
+      const blob = new Blob([resultText], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'optimized_animation.json';
+      a.click();
+      
+      URL.revokeObjectURL(url);
+    });
+    
+    function showResults(optimized) {
+      // Display optimization stats
+      const statsHtml = `
+        <p><strong>Size Reduction:</strong> ${optimized.sizeReduction || 'N/A'}</p>
+        <p><strong>Optimization Level:</strong> ${optimized.optimizationLevel || 'N/A'}</p>
+        <p><strong>Timestamp:</strong> ${optimized.timestamp || new Date().toISOString()}</p>
+      `;
+      optimizationStats.innerHTML = statsHtml;
+      
+      // Display the optimized data
+      resultData.textContent = JSON.stringify(optimized, null, 2);
+      
+      // Show the result container
+      resultContainer.style.display = 'block';
+    }
+    
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorContainer.style.display = 'block';
+    }
+    
+    function hideResults() {
+      resultContainer.style.display = 'none';
+      errorContainer.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

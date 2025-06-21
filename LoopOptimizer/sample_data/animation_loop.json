@@ -1,0 +1,87 @@
+{
+  "id": "loop_001",
+  "name": "Spinning Wheel",
+  "duration": 2.5,
+  "fps": 30,
+  "frames": [
+    {
+      "position": { "x": 0, "y": 0, "rotation": 0 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 30 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 60 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 90 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 120 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 150 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 180 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 210 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 240 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 270 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 300 },
+      "opacity": 1,
+      "scale": 1
+    },
+    {
+      "position": { "x": 0, "y": 0, "rotation": 330 },
+      "opacity": 1,
+      "scale": 1
+    }
+  ],
+  "properties": {
+    "loopable": true,
+    "easing": "linear",
+    "backgroundColor": "#ffffff",
+    "elements": [
+      {
+        "id": "wheel",
+        "type": "circle",
+        "size": 100,
+        "color": "#3498db",
+        "spokes": 8
+      }
+    ]
+  },
+  "metadata": {
+    "creator": "Animation Tool",
+    "createdAt": "2023-06-15T14:30:00Z",
+    "version": "1.0.0"
+  }
+}
