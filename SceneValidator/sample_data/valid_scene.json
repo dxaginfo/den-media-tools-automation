@@ -1,0 +1,64 @@
+{
+  "id": "scene_001",
+  "location": "Apartment Living Room",
+  "time": "Morning",
+  "characters": [
+    {
+      "id": "char_001",
+      "name": "Alex",
+      "appearance": "Wearing blue jeans and a red t-shirt",
+      "position": "Standing by the window"
+    },
+    {
+      "id": "char_002",
+      "name": "Jamie",
+      "appearance": "Wearing a gray suit",
+      "position": "Sitting on the couch"
+    }
+  ],
+  "actions": [
+    {
+      "character": "char_001",
+      "description": "Looks out the window with a concerned expression"
+    },
+    {
+      "character": "char_002",
+      "description": "Opens laptop and begins typing"
+    },
+    {
+      "character": "char_001",
+      "description": "Turns away from window and addresses Jamie"
+    }
+  ],
+  "props": [
+    {
+      "id": "prop_001",
+      "name": "Laptop",
+      "description": "Silver laptop with stickers",
+      "position": "On the coffee table"
+    },
+    {
+      "id": "prop_002",
+      "name": "Coffee mug",
+      "description": "White ceramic mug with coffee",
+      "position": "Next to the laptop"
+    }
+  ],
+  "lighting": "Bright natural light from the window",
+  "camera": {
+    "angle": "Wide shot",
+    "movement": "Static"
+  },
+  "dialogue": [
+    {
+      "character": "char_001",
+      "text": "I think we might have a problem.",
+      "delivery": "Concerned tone"
+    },
+    {
+      "character": "char_002",
+      "text": "What's going on?",
+      "delivery": "Distracted, still looking at laptop"
+    }
+  ]
+}

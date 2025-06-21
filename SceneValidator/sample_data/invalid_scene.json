@@ -1,0 +1,9 @@
+{
+  "id": "scene_002",
+  "location": "Apartment Living Room",
+  "time": "Morning",
+  "characters": {
+    "name": "This should be a list, not an object"
+  },
+  "actions": "This should be a list, not a string"
+}
